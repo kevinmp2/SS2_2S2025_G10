@@ -1,7 +1,7 @@
 # Procesamiento y Analisis Exploratorio de Datos Masivos en Big Query - GRUPO 10
 
 ## Integrantes
-- Mario Ernesto Marroquin - 20181020058
+- Mario Ernesto Marroquín Pérez - 202110509
 - Kewin Maslovy Patzan - 202103206
 
 
@@ -373,3 +373,77 @@ GROUP BY pickup_borough;
 ```
 ![DensidadDemanda](img/Borough.png)
 ![DetallesDensidadDemanda](img/BoroughVista.png)
+
+---
+
+## Gráficas
+
+[Enlace al DashboardRepresentativos](https://lookerstudio.google.com/s/unDt8PJK-nI)
+
+### Top Mejores Zonas con Mejores Rendimientos
+
+![Top Mejores Zonas con Mejores Rendimientos](img/MejoresZonas.png)
+
+**1. Propósito de la Tabla**
+
+El objetivo de esta tabla es identificar las zonas de la ciudad de Nueva York que son más importantes para el negocio de los taxis. No solo miramos la cantidad de viajes, sino que cruzamos varias métricas de rendimiento como los ingresos totales, el valor promedio de cada viaje y el comportamiento de pago del usuario. Esto nos da una visión completa de dónde se genera más valor.
+
+**2. Desglose de las Métricas**
+
+Para lograr este análisis, se defineiros las siguientes métricas clave:
+* **Viajes Zona:** Es el número total de viajes que se originaron en esa zona. Mide la popularidad o el volumen de demanda.
+* **Ingresos Zona (USD):** Es la suma de todo el dinero generado por los viajes desde esa zona. Mide el impacto económico directo.
+* **Ticket Promedio Zona:** Se calcula dividiendo los ingresos totales entre el número de viajes. Esta métrica es muy importante porque nos dice el valor promedio de un viaje en esa área. Un ticket promedio alto es muy rentable.
+* **Market Share Zona:** Representa el porcentaje de todos los viajes de la ciudad que pertenecen a esa zona. Nos ayuda a entender qué tan dominante es cada área en el mercado total.
+* **Pagos Tarjeta y Porcentaje:** Muestra la preferencia de los usuarios por pagar con tarjeta. [cite_start]Esto es relevante para entender el comportamiento del consumidor y la digitalización de los pagos[cite: 53].
+
+**3.Hallazgos y Patrones Relevantes**
+
+Al realizar el análisis de los datos, se encontraron varios patrones:
+* **Los Aeropuertos son los líderes indiscutibles en ingresos:** JFK y LaGuardia, aunque no tienen el mayor número de viajes comparado con algunas zonas de Manhattan, generan los ingresos y el ticket promedio más altos por un amplio margen. El viaje desde o hacia un aeropuerto es el más valioso para un taxista. Por ejemplo, el ticket promedio en JFK es de $67, mientras que en zonas de Manhattan ronda los $20.
+* **Manhattan es el corazón del negocio diario:** Zonas como Midtown (East, North, Center), Upper East Side y Union Square dominan la lista. Esto demuestra que el centro neurálgico de la actividad económica y social de la ciudad es donde se concentra el volumen diario de viajes de taxi.
+* **Diferentes tipos de "zonas top":**
+    * **Por Volumen:** JFK Airport, Upper East Side South y Midtown Center son las zonas con mayor cantidad de viajes.
+    * **Por Rentabilidad (Ticket Promedio):** JFK y LaGuardia son, por mucho, las más rentables por viaje.
+    * **Por Comportamiento de Pago:** En zonas como Union Sq y East Village se ve el mayor porcentaje de uso de tarjeta (más del 81%). Esto podría indicar una población más joven o una mayor cantidad de transacciones relacionadas con el ocio.
+
+
+### Densidad de Demanda por Borough
+
+![Densidad de Demanda por Borough](img/DensidadDemanda.png)
+
+**1. Propósito del Mapa**
+
+Después de analizar las zonas más rentables en una tabla, quisimos visualizar esta información geográficamente para entender la distribución espacial de la demanda. Este mapa de calor o de burbujas nos permite responder a la pregunta:¿Dónde se concentra la actividad de los taxis en Nueva York?.
+
+**2. Cómo Interpretar la Visualización**
+
+Este mapa utiliza dos elementos visuales para comunicar la información de manera efectiva:
+* **El tamaño de la burbuja:** Representa el **volumen total de viajes** que se originan en esa área. Una burbuja más grande significa una mayor cantidad de viajes y, por lo tanto, una mayor demanda.
+* **El color de la burbuja:** Representa los **ingresos totales** generados en esa zona. Cada color está asociado a un rango de ingresos, lo que nos permite identificar rápidamente las áreas más lucrativas.
+
+**3. Hallazgos y Patrones Clave**
+
+La visualización revela patrones geográficos muy claros y confirma los hallazgos de nuestra tabla anterior:
+* **Manhattan es el epicentro absoluto de la demanda:** "La burbuja más grande, ubicada sobre Manhattan, demuestra que la inmensa mayoría de los viajes de taxi se originan en este distrito. Es el corazón indiscutible del negocio en términos de volumen".
+* **Queens destaca como un centro de altos ingresos:** Observamos una burbuja de color naranja sobre Queens. Aunque es más pequeña en tamaño que la de Manhattan (lo que indica menos viajes en total), su color representa el segundo nivel más alto de ingresos. Esto se alinea perfectamente con nuestro análisis anterior que identificó a los aeropuertos JFK y LaGuardia, ubicados en Queens, como las zonas con el ticket promedio más alto y una facturación masiva.
+* **Actividad significativamente menor en otros distritos:** Las burbujas sobre los otros distritos, como Brooklyn, El Bronx y Staten Island, son considerablemente más pequeñas y de colores que indican menores ingresos. Esto demuestra que, si bien hay servicio en toda la ciudad, la actividad está fuertemente concentrada en Manhattan y en los puntos estratégicos de Queens.
+
+
+### Promedio Distancia Recorrida por Zona
+
+![Promedio Distancia Recorrida por Zona](img/PromedioDistancia.png)
+
+**1. Propósito de la Gráfica**
+
+Mientras que los mapas y las tablas anteriores nos mostraron *dónde* está la demanda y *cuánto* dinero se genera, esta gráfica busca responder una pregunta diferente: **¿Qué tan largos son los viajes típicos que se inician en diferentes zonas de la ciudad?** El objetivo es entender los patrones de movilidad, diferenciando entre zonas de viajes cortos y locales y zonas de viajes más largos o de tipo 'commuter'.
+
+**2. Cómo Interpretar la Gráfica**
+
+En este gráfico de barras, el eje vertical (eje Y) representa la distancia promedio de un viaje en millas, mientras que el eje horizontal (eje X) lista las diferentes zonas de origen. Hemos coloreado las barras según el distrito (`Borough`) al que pertenecen, lo que nos permite comparar no solo entre zonas, sino también entre distritos.
+
+**3. Hallazgos y Patrones Clave**
+
+* **Viajes Largos desde Zonas Periféricas o 'Puente'**: Observamos que las distancias promedio más largas provienen de zonas como **Washington Heights North** (en el extremo norte de Manhattan) y **Greenpoint** (Brooklyn). Esto sugiere que estas áreas pueden funcionar como puntos de partida para viajes más largos, posiblemente hacia el centro de negocios de Manhattan o incluso hacia otros distritos.
+* **Viajes Cortos en Zonas Céntricas o de Alta Densidad**: Por el contrario, muchas zonas, especialmente en Manhattan como Central Harlem o Hudson Sq, muestran distancias promedio muy cortas. Esto es característico de áreas con alta densidad de puntos de interés, donde los taxis se usan para trayectos breves que serían demasiado largos para caminar.
+* **El Hallazgo Contraintuitivo de JFK Airport**: Un resultado que llama mucho la atención es la distancia promedio extremadamente corta para viajes que inician en el **aeropuerto JFK**. Esto contrasta fuertemente con nuestro hallazgo anterior de que es la zona con el ticket promedio más alto. Una posible explicación es que el dataset incluye un gran volumen de viajes muy cortos *dentro* del perímetro del aeropuerto (ej. entre terminales, a estacionamientos o a hoteles cercanos), lo que reduce drásticamente el promedio general. Este es un ejemplo perfecto de cómo el análisis exploratorio nos ayuda a descubrir complejidades en los datos que merecen una investigación más profunda.
