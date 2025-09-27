@@ -447,3 +447,52 @@ En este gráfico de barras, el eje vertical (eje Y) representa la distancia prom
 * **Viajes Largos desde Zonas Periféricas o 'Puente'**: Observamos que las distancias promedio más largas provienen de zonas como **Washington Heights North** (en el extremo norte de Manhattan) y **Greenpoint** (Brooklyn). Esto sugiere que estas áreas pueden funcionar como puntos de partida para viajes más largos, posiblemente hacia el centro de negocios de Manhattan o incluso hacia otros distritos.
 * **Viajes Cortos en Zonas Céntricas o de Alta Densidad**: Por el contrario, muchas zonas, especialmente en Manhattan como Central Harlem o Hudson Sq, muestran distancias promedio muy cortas. Esto es característico de áreas con alta densidad de puntos de interés, donde los taxis se usan para trayectos breves que serían demasiado largos para caminar.
 * **El Hallazgo Contraintuitivo de JFK Airport**: Un resultado que llama mucho la atención es la distancia promedio extremadamente corta para viajes que inician en el **aeropuerto JFK**. Esto contrasta fuertemente con nuestro hallazgo anterior de que es la zona con el ticket promedio más alto. Una posible explicación es que el dataset incluye un gran volumen de viajes muy cortos *dentro* del perímetro del aeropuerto (ej. entre terminales, a estacionamientos o a hoteles cercanos), lo que reduce drásticamente el promedio general. Este es un ejemplo perfecto de cómo el análisis exploratorio nos ayuda a descubrir complejidades en los datos que merecen una investigación más profunda.
+
+### Viajes Por Mes Durante 2022
+![Viajes Por Mes Durante 2022](img/ViajesPorMes2022.png)
+
+**1. Propósito de la Gráfica**
+Esta gráfica de líneas tiene como objetivo mostrar cómo varió el número total de viajes en taxi en Nueva York a lo largo de los meses del año 2022. Nos permite identificar patrones estacionales, picos de demanda y posibles tendencias a lo largo del tiempo.
+
+**2. Cómo Interpretar la Gráfica**
+El eje vertical (eje Y) representa el número total de viajes, ingresos totales y tarifa promedio, mientras que el eje horizontal (eje X) muestra los meses del año. Cada punto en la línea representa el total de viajes en un mes específico, lo que facilita la identificación de tendencias a lo largo del tiempo.
+
+**3. Hallazgos y Patrones Clave**
+
+* **Marzo destaca por facturación**:es el mes con mayores ingresos del tramo mostrado. La tarifa es intermedia, lo que sugiere que el volumen de viajes (línea azul) es el motor del resultado.
+
+* **Febrero también es sólido**: ingresos altos con tarifa media; nuevamente, el volumen parece explicar la buena facturación.
+
+* **Precio alto ≠ ingresos altos**: Diciembre muestra la tarifa promedio más alta, pero ingresos bajos y menos viajes. Es decir, un precio elevado no compensó la caída de demanda. Mayo presenta una tarifa elevada con ingresos modestos, patrón similar: elasticidad de la demanda frente al precio.
+
+### Demanda por hora 
+![Demanda por hora](img/DemandaPorHora.png)
+
+**1. Propósito de la Gráfica**
+Esta gráfica de líneas tiene como objetivo mostrar cómo varió el número total de viajes en taxi en Nueva York a lo largo de las horas del día durante el año 2022. Nos permite identificar patrones diarios, picos de demanda y posibles tendencias a lo largo del día.
+
+**2. Cómo Interpretar la Gráfica**
+El eje vertical (eje Y) representa el número total de viajes, ingresos y ticket promedio mientras que el eje horizontal (eje X) muestra las horas del día.
+
+**3. Hallazgos y Patrones Clave**
+
+* **Pico de viajes en la tarde–noche (14–21 h)**: La línea azul muestra un fuerte incremento desde el mediodía hasta la noche, alcanzando su máximo alrededor de las 15–16 h y 20–21 h. Son las horas de mayor movimiento.
+
+* **Ingresos concentrados en franjas de alta demanda**: Los ingresos (barras azules) acompañan al patrón de viajes: cuando hay más viajes, suben los ingresos, incluso si la tarifa promedio no es la más alta.
+
+* **Tickets más caros en horas de baja demanda**: Se observa que en la madrugada (5–7 h y 2–4 h) las barras naranjas son relativamente altas, es decir, el ticket promedio sube. Esto sugiere que los viajes en esas horas son más largos o con recargos, aunque el volumen de viajes sea bajo.
+
+### Top Rutas Por Ingresos
+![Top Rutas Por Ingresos](img/RutasPorIngreso.png)
+
+**1. Propósito de la Gráfica**
+Esta gráfica de barras tiene como objetivo identificar las rutas más lucrativas para los taxis en Nueva York durante el año 2022. Nos permite ver cuáles son las combinaciones de zonas de recogida y destino que generan los mayores ingresos totales.
+
+**2. Cómo Interpretar la Gráfica**
+El eje vertical (eje Y) representa los ingresos totales generados por cada ruta, mientras que el eje horizontal (eje X) muestra el número de viajes realizados en cada ruta, cada punto corresponde a una ruta específica (pickup → dropoff).
+
+**3. Hallazgos y Patrones Clave**
+
+* **Concentración de ingresos en pocas rutas**: Se observa que hay unas 2–3 burbujas destacadas (arriba a la derecha), que generan ingresos muy superiores al resto. Estas rutas son probablemente trayectos recurrentes de alto volumen (ej. aeropuerto ↔ Manhattan).
+
+* **Volumen vs rentabilidad**: Algunas rutas generan ingresos altos porque tienen muchos viajes (parte derecha del gráfico), mientras que otras lo hacen con menos viajes pero tickets más altos (burbujas arriba pero más a la izquierda).
