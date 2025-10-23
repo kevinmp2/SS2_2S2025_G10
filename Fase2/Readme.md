@@ -978,3 +978,69 @@ Esta consulta no produce una salida directa, sino que crea una nueva tabla de re
 - La conclusión final de todo este proyecto es que el modelo de Regresión Lineal base, a pesar de su simplicidad, es el modelo más preciso, rápido e interpretable para esta tarea.
 
 
+### Dashboards Representativos
+
+#### PREDICCIONES BOOSTED VALORES REALES Y PREDICHOS
+
+La tabla de predicciones, titulada "PREDICCIONES BOOSTED VALORES REALES Y PREDICHOS", expone visualmente el comportamiento del modelo prototipo `tip_prediction_boosted` y confirma los hallazgos del **Análisis 2** de la documentación.
+
+El descubrimiento más importante que revela esta tabla se encuentra en la columna `predicted_tip_amount`. Se puede observar que el modelo predice un valor **constante** (aproximadamente **$0.916**) para cada viaje, sin importar cuáles sean las características de entrada.
+
+* **Ignora las Features:** El modelo predice $0.916 tanto para un viaje con `fare_amount` de $5.5 (filas 1-2) como para uno de $8.0 (filas 5-7). De igual manera, ignora la `trip_distance` (que varía de 0.6 a 1.4 millas).
+* **Síntoma de Subajuste (Underfitting):** Este comportamiento es un síntoma clásico de un modelo severamente **subajustado**. Tal como se documentó, este modelo fue un prototipo entrenado intencionalmente con hiperparámetros muy débiles (`max_iterations=2`, `max_tree_depth=1`) y sobre una muestra limitada de datos.
+* **Fallo en el Aprendizaje:** El modelo fue incapaz de aprender patrones o relaciones entre las variables de entrada (tarifa, distancia) y la variable objetivo (propina). En lugar de crear reglas complejas, colapsó en la estrategia más simple: predecir un valor único, que probablemente sea cercano al promedio o la mediana de la propina del subconjunto de datos con el que fue entrenado.
+* **Validación de Métricas:** Esta tabla explica visualmente por qué este modelo obtuvo métricas de evaluación tan deficientes, notablemente un **R² Score negativo (-0.417)**. Un modelo que ignora por completo las entradas y predice un valor constante es, por definición, peor que simplemente predecir el promedio de las propinas, que es exactamente lo que mide un R² negativo.
+
+![Boosted](./img/Boosted.png)
+
+
+#### PREDICCIONES LINEAR VALORES REALES Y PREDICHOS
+
+Esta tabla, titulada "PREDICCIONES LINEAR VALORES REALES Y PREDICHOS", muestra el comportamiento del modelo *baseline* de Regresión Lineal y contrasta drásticamente con el prototipo fallido del *Boosted Tree*.
+
+
+A diferencia del modelo anterior, este es **claramente funcional**. La columna `predicted_tip_amount` muestra valores dinámicos que cambian en respuesta a las variables de entrada, tal como se esperaba.
+
+
+1.  **Comportamiento Racional (Responde a las Features):**
+    * El modelo demuestra una relación lógica entre las entradas y las predicciones, confirmando el análisis de `ML.WEIGHTS` que identificó a `fare_amount` y `trip_distance` como los predictores clave.
+    * **Ejemplo (Fila 1):** Un viaje con una tarifa alta (`fare_amount` = 52) y una distancia larga (`trip_distance` = 19.68) resulta correctamente en la predicción de propina más alta de la tabla ($11.31).
+    * **Ejemplo (Filas 5-13):** Viajes con tarifas y distancias moderadas (ej. `fare_amount` = 18) resultan en predicciones de propina más bajas y consistentes (en el rango de $3.78 - $3.99).
+
+2.  **Fortaleza - Precisión en Casos Comunes (Rango Medio):**
+    * La sección de la tabla de la Fila 5 a la 13 es la más reveladora. Para un valor real de propina muy común (`real_tip_amount` = $4.26), el modelo produce predicciones consistentemente cercanas (`predicted_tip_amount` entre $3.78 y $3.99).
+    * Los errores absolutos en estos casos son muy bajos (ej. $4.26 - $3.99 = $0.27).
+    * Esto explica **por qué el modelo obtuvo una `median_absolute_error` tan buena** (de $0.533, según tu documentación). Para la mitad de los viajes (los más "normales"), el modelo es muy preciso, ganándose la calificación de "Excelente".
+
+3.  **Debilidad - Fallo en Valores Extremos (Outliers):**
+    * La **Fila 1** expone la debilidad clave de este modelo, identificada en tu análisis.
+    * La propina real fue de **$14.84** (un valor atípico, clasificado como "Muy Alta"). El modelo predijo **$11.31**.
+    * Aunque el modelo entendió que debía ser una propina alta, **subestimó el valor real en $3.53**. Esto confirma tu conclusión anterior: el modelo lineal sigue la "media" de los datos y es incapaz de predecir correctamente estos valores extremos, lo que genera errores grandes y una calidad de predicción "Pobre" en esos casos.
+
+![Linear](./img/Linear.png)
+
+
+#### COMPARACION DE METRICAS ENTRE LOS MODELOS BOOSTED TREE Y REGRESION LINEAL
+
+Esta tabla presenta la **comparación cuantitativa final** entre el modelo de Regresión Lineal (`Linear Regression`) y el prototipo de Árbol Potenciado (`Boosted Tree Regressor`). Los resultados son concluyentes y se alinean perfectamente con los análisis de predicciones anteriores.
+
+El modelo de **Regresión Lineal es el ganador indiscutible** en todas las métricas evaluadas, como lo indican las columnas `rank_by_mae` y `rank_by_r2` (ambas con valor "1").
+
+#### 1. Modelo Ganador: Regresión Lineal (Baseline)
+
+Este modelo establece un *baseline* sólido y funcional para el problema.
+
+* **`r2` (Coeficiente de Determinación) = 0.688:** Esta es la métrica principal. Indica que el modelo lineal es capaz de **explicar el 68.8% de la variabilidad** en el monto de las propinas. Para un modelo *baseline* simple, este es un resultado muy robusto.
+* **`mae` (Error Absoluto Medio) = 1.097:** Es la métrica más interpretable. En promedio, las predicciones del modelo tienen un **error de $1.10** (hacia arriba o hacia abajo). Este es el punto de referencia a vencer.
+* **`median_ae` (Mediana del Error Absoluto) = 0.533:** Este es un hallazgo clave. Significa que para el **50% de todos los viajes, el error del modelo es de solo 53 centavos o menos**. Esto confirma lo que vimos en la tabla de predicciones: el modelo es extremadamente preciso para la gran mayoría de viajes "normales" (calificados como "Excelente").
+* **`rmse` (Raíz del Error Cuadrático Medio) = 2.026:** El RMSE es más alto que el MAE, lo cual es normal. Confirma que, aunque el modelo es bueno en la mediana, tiene algunos errores significativamente grandes (como vimos en la Fila 1 de su tabla de predicciones, al fallar en *outliers*), y el RMSE penaliza más esos errores grandes.
+
+#### 2. Modelo Perdedor: Boosted Tree Regressor (Prototipo)
+
+Las métricas de este modelo confirman que el prototipo fue un **completo fracaso**, tal como se esperaba del experimento con hiperparámetros débiles (`max_iterations=2`).
+
+* **`r2` (Coeficiente de Determinación) = -0.441:** Este es el indicador más crítico. Un **R² negativo** significa que el modelo es **peor que inútil**; es peor que simplemente predecir la propina promedio en cada viaje. Esto es la consecuencia directa del *subajuste* (underfitting) que observamos en la primera gráfica, donde el modelo predecía un valor constante ($0.916) para todas las entradas.
+* **`mae` (Error Absoluto Medio) = 2.981:** El error promedio de este modelo es de casi $3, casi **tres veces peor** que el error del modelo lineal.
+* **`rmse` y `median_ae` (4.357 y 1.944):** Ambas métricas son más del doble (y casi el cuádruple en el caso de la mediana) que las del modelo lineal, lo que demuestra que es inferior en todos los aspectos.
+
+![Metricas entre modelos](./img/Metricas.png)
