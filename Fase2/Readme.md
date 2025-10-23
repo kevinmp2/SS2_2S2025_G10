@@ -12,6 +12,10 @@
 - Integrante 1: Mario Ernesto Marroquin - 202110509
 - Integrante 2: Kewin Maslovy Patzan - 202103206
 
+### Enlace al Dashboard Representativo (páginas 3-4)
+
+[Dashboard](https://lookerstudio.google.com/reporting/6d3e71a1-e298-4ac6-9bd9-ba19b6bb83a3)
+
 ### Objetivo del Modelado
 
 Construir y evaluar modelos predictivos de Machine Learning en BigQuery ML para predecir el monto de propina (tip_amount) que recibirá un taxista en base a características del viaje, permitiendo a los conductores optimizar sus decisiones operativas y a la empresa mejorar estimaciones de ingresos.
