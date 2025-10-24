@@ -12,7 +12,7 @@
 - Integrante 1: Mario Ernesto Marroquin - 202110509
 - Integrante 2: Kewin Maslovy Patzan - 202103206
 
-### Enlace al Dashboard Representativo (páginas 3-4)
+### Enlace al Dashboard Representativo (páginas 3-5)
 
 [Dashboard](https://lookerstudio.google.com/reporting/6d3e71a1-e298-4ac6-9bd9-ba19b6bb83a3)
 
@@ -1048,3 +1048,33 @@ Las métricas de este modelo confirman que el prototipo fue un **completo fracas
 * **`rmse` y `median_ae` (4.357 y 1.944):** Ambas métricas son más del doble (y casi el cuádruple en el caso de la mediana) que las del modelo lineal, lo que demuestra que es inferior en todos los aspectos.
 
 ![Metricas entre modelos](./img/Metricas.png)
+
+
+#### Mejores y Peores 20 Predicciones
+
+#### Análisis Mejores Predicciones 
+
+Este gráfico se filtra para mostrar los casos donde el modelo tuvo el **menor error**.
+
+1.  **Validación de Precisión:** Este gráfico demuestra la **fortaleza principal** de tu modelo. En los casos más "normales" o "fáciles" de predecir (con propinas en el rango de $2 a $3, como se ve en el eje Y), el modelo es **extremadamente preciso**.
+2.  **Barras Casi Idénticas:** Se observa que en todas las horas mostradas (10, 11, 12, 14, 15, 18, 20), la barra azul (`real_tip_amount`) y la barra naranja (`predicted_tip_amount`) son **casi idénticas en altura**.
+3.  **Confirmación de Métricas:** Esta es la **explicación visual** de por qué tu modelo obtuvo una **`median_absolute_error` (Mediana del Error Absoluto) tan baja (de $0.533)**. Significa que para la mayoría de los viajes comunes, el modelo acierta casi perfectamente.
+
+**Conclusión (Mejores):** El modelo lineal es **altamente confiable y preciso** para predecir la gran mayoría de las propinas del día a día (rango bajo a medio).
+
+---
+
+#### Análisis Peores Predicciones
+
+Este gráfico se filtra para mostrar los casos donde el modelo tuvo el **mayor error**. Es el diagnóstico de la **debilidad clave** del modelo.
+
+1.  **Diagnóstico del Fallo (Outliers):** Este gráfico confirma visualmente la conclusión de tu análisis `ML.PREDICT`. La debilidad fundamental del modelo es su **incapacidad total para predecir valores atípicos (outliers)**.
+2.  **Discrepancia Masiva:**
+    * Las barras verdes (`real_tip_amount`) están todas agrupadas en la parte superior del eje Y, en valores cercanos a **$50**. Esto nos dice que los peores errores del modelo ocurren cuando la propina real es muy alta.
+    * Las barras amarillas (`predicted_tip_amount`), en cambio, muestran valores **cercanos a $0** (basado en el análisis de tu documentación, donde predecía $1 o $2).
+3.  **El "Porqué" del RMSE:** Esta gráfica explica perfectamente por qué tu métrica **`RMSE` ($2.026) fue mucho más alta que tu `MAE` ($1.097)**. El RMSE penaliza severamente los errores grandes. Unos pocos errores masivos como estos (predecir $1 cuando era $50) son suficientes para "inflar" el RMSE, aunque el modelo sea muy bueno en la mediana (como vimos en la gráfica superior).
+4.  **Debilidad del Modelo Lineal:** Una regresión lineal busca la "mejor línea" que se ajusta a la *mayoría* de los datos. Un valor de $50 está tan lejos de la norma que el modelo es matemáticamente incapaz de producir una predicción tan alta; simplemente predice un valor "normal" bajo, generando un error enorme.
+
+**Conclusión (Peores):** El modelo lineal **falla catastróficamente** al intentar predecir propinas extremadamente altas (outliers), subestimándolas masivamente.
+
+![MejoresVsPeores](./img/MejoresVsPeores.png)
